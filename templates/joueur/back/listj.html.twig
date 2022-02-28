@@ -12,6 +12,8 @@
         <td>Email</td>
         <td>Numero</td>
         <td>Nombre de partie jouer</td>
+        <td>Equipe</td>
+
         <td>Actions</td>
 
     </tr>
@@ -24,6 +26,7 @@
             <td>{{ joueur.email }}</td>
             <td> {{ joueur.numero }}</td>
             <td> {{ joueur.nbrpartiejouer }}</td>
+            <td> {{ joueur.equipes }}</td>
             <td> <a href="modifjoueurs/{{joueur.id}}">
                     <input  class="btn-primary" type="submit" value="Modifier"/></a>
              <a href="supprimerjoueur/{{joueur.id}}}">

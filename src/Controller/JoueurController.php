@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Joueurs;
+use App\Form\JoueursType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,10 +23,20 @@ class JoueurController extends AbstractController
     {
         $joueur = $this->getDoctrine()->getRepository(Joueurs::class)->findAll();
 
-        return $this->render('joueur/listj.html.twig', [
+        return $this->render('joueur/back/listj.html.twig', [
             'joueurs' => $joueur]);
     }
 
+    /**
+     * @Route("/front/joueurs", name="front/joueurs")
+     */
+    public function affichage()
+    {
+        $joueur = $this->getDoctrine()->getRepository(Joueurs::class)->findAll();
+
+        return $this->render('joueur/front/affjoueur.html.twig', [
+            'joueurs' => $joueur]);
+    }
     /**
      * @Route("/supprimerjoueur/{idjoueur}", name="supprimerjoueur")
      */
@@ -45,23 +56,21 @@ class JoueurController extends AbstractController
      */
     public function ajout(Request $request): Response
     {
-        if ($request->getMethod() == 'POST') {
-            $joueur = new Joueurs();
-            $joueur->setNom($request->get('nom'));
-            $joueur->setPrenom($request->get('prenom'));
-            $joueur->setEmail($request->get('email'));
-            $joueur->setNumero($request->get('numero'));
-            $joueur->setNbrPartieJouer($request->get('nbrpartiejouer'));
+        $joueurs = new Joueurs();
+        $form = $this->createForm(JoueursType::class,$joueurs)->add('submit', SubmitType::class)->handleRequest($request);
+        if ($form->isSubmitted()) {
 
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($joueur);
+          $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($joueurs);
             $entityManager->flush();
-            return $this->redirectToRoute('joueurs'
-            );
+
+            return $this->redirectToRoute('joueurs');
         }
-        return $this->render('joueur/ajoutjoueurs.html.twig'
-        );
+
+        return $this->render('joueur/back/ajoutjoueurs.html.twig', [
+            'joueurs'=>$joueurs,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -84,7 +93,7 @@ class JoueurController extends AbstractController
             return $this->redirectToRoute('joueurs'
             );
         }
-        return $this->render('joueur/modifjoueur.html.twig'
+        return $this->render('joueur/back/modifjoueur.html.twig'
             ,[
             'joueurs' => $joueur
         ]);

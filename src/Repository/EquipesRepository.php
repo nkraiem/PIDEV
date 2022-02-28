@@ -47,4 +47,13 @@ class EquipesRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findStartingWith($recherche)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.nom LIKE :val')
+            ->setParameter("val", $recherche . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

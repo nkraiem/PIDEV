@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\JoueursRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=JoueursRepository::class)
@@ -15,36 +16,56 @@ class Joueurs
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id_j;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\Regex(
+     *     pattern     = "/^[a-zA-Z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+"
+     * )
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Regex(
+     *     pattern     = "/^[a-zA-Z]+$/i"
+     * )
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=60)
+     *  @Assert\Regex(
+     *     pattern="/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",
+     *     message="not_valid_email"
+     *)
      */
     private $email;
 
     /**
+     * @Assert\Positive
      * @ORM\Column(type="integer")
+
      */
     private $numero;
 
     /**
+     * @Assert\Positive
      * @ORM\Column(type="integer")
      */
     private $nbr_partie_jouer;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Equipes::class, inversedBy="joueur")
+     */
+    private $equipes;
+
+
     public function getId(): ?int
     {
-        return $this->id_j;
+        return $this->id;
     }
 
     public function getNom(): ?string
@@ -106,4 +127,17 @@ class Joueurs
 
         return $this;
     }
+
+    public function getEquipes(): ?Equipes
+    {
+        return $this->equipes;
+    }
+
+    public function setEquipes(?Equipes $equipes): self
+    {
+        $this->equipes = $equipes;
+
+        return $this;
+    }
+
 }
