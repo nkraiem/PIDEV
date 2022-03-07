@@ -4,17 +4,23 @@
 {% block body %}
 
 
-    <input id="search" type=text value="" placeholder="type a name">
-    <nav class="card-body">
+    <input  class="navbar-search" id="search" type=text value="" placeholder="type a name">
+
+    <div class="card-group">
+        <div class="flex-container">
+    <div class="card-body">
 
 
         <div id="searchBody">
 
         </div>
         <div id="body1">
+            <div class="flex-container">
             {% for equipe in equipes %}
-                <div class="card border-dark bg-danger mb-3" style="max-width: 21rem;">
-                    <div class="card-body pr-2">
+                {% if equipe.suspension==0  %}
+                <div class="card border-dark bg-danger mb-3" style="max-width: 21rem;justify-content: space-between">
+                    <div class="row-container">
+                    <div class="card-body pr-2" >
                         <h3 style="color: black">Nom Equipe : {{ equipe.nom }}</h3>
                         <div class="d-flex flex-column flex-lg-row">
                             <h4 style="color: whitesmoke">Nombre des victoires: {{ equipe.nbrvic }} <br><br>
@@ -23,10 +29,19 @@
                             </h4><br>
                         </div>
                     </div>
+                    </div>
                 </div>
+                {% endif %}
             {% endfor %}
+            </div>
+            <div class="mt-5">
+                {{ knp_pagination_render(equipes, 'pagination.html.twig') }}
+            </div>
         </div>
-    </nav>
+    </div>
+
+    </div>
+</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>

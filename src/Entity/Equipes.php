@@ -53,6 +53,11 @@ class Equipes
      */
     private $joueur;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $suspension;
+
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
@@ -143,6 +148,18 @@ class Equipes
                 $joueur->setEquipes(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSuspension(): ?bool
+    {
+        return $this->suspension;
+    }
+
+    public function setSuspension(bool $suspension): self
+    {
+        $this->suspension = $suspension;
 
         return $this;
     }

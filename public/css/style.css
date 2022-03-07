@@ -2248,6 +2248,32 @@ ol {
 .club-tab-list {
 	margin-top: 30px;
 }
+.card-group {
+	justify-content: center;
+	display: flex;
+}
+.card {
+	margin: 10px;
+
+}
+.flex-container {
+
+	display: flex;
+	flex-flow: row wrap;
+
+}
+.navbar-search{
+	display: flex;
+margin-left: 267px;
+	margin-top: 100px;
+
+}
+.row-container{
+display: flex;
+	justify-content: space-between;
+}
+
+
 
 .club-tab-list .nav {
 	-webkit-box-pack: center;

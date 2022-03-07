@@ -11,6 +11,7 @@
         <td>nbr vic</td>
         <td>nbr defaite</td>
         <td>nbr nul</td>
+        <td>Statut</td>
         <td>Actions</td>
 
     </tr>
@@ -22,10 +23,14 @@
         <td>{{ equipe.nbrvic }}</td>
         <td>{{ equipe.nbrper }}</td>
         <td> {{ equipe.nbrnull }}</td>
+        <td> {% if equipe.suspension == 1 %} Suspendue
+            {% else %} Actif{% endif %}</td>
         <td>  <a href="modifequipes/{{equipe.id}}">
                 <input class="btn-primary" type="submit" value="Modifier"/></a>
             <a href="supprimerequipe/{{equipe.id}}}">
                 <input class="btn-danger" type="submit" value="supprimer"/></a>
+            {% if equipe.suspension == 1 %} <a href="{{ path ('suspendre_equipe', {'id' : equipe.id})}}" class="btn btn-success text-white" href="#">Activer</a>
+            {% else %}<a href="{{ path ('actif_equipe', {'id' : equipe.id})}}" class="btn btn-success text-white" href="#">Suspender</a> {% endif %}
         </td>
 
     </tr>

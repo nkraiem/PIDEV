@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Equipes;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,12 +35,15 @@ class EquipeController extends AbstractController
     /**
      * @Route("/front/equipes", name="front/equipes")
      */
-    public function affichage()
+    public function affichage(Request $request,PaginatorInterface $paginator)
     {
         $equipe = $this->getDoctrine()->getRepository(Equipes::class)->findAll();
 
         return $this->render('equipe/front/affequipe.html.twig', [
-            'equipes' => $equipe]);
+            'totalEquipes' => count($equipe),
+            'equipes' => $paginator->paginate($equipe,
+                $request->query->getInt('page', 1), 3)
+            ]);
     }
 
     /**
@@ -64,6 +68,8 @@ class EquipeController extends AbstractController
         if ($request->getMethod() == 'POST') {
             $equipe = new Equipes();
             $equipe->setNom($request->get('nom'));
+            $equipe->setSuspension($request->get('suspension'));
+
             $equipe->setNbrVic($request->get('nbrvic'));
             $equipe->setNbrPer($request->get('nbrper'));
             $equipe->setNbrNull($request->get('nbrnull'));
@@ -125,6 +131,34 @@ class EquipeController extends AbstractController
         }
 
         return new Response(json_encode($equipesJson));
+    }
+    /**
+     * @Route("equipes/{id}/suspendre", name="suspendre_equipe")
+     */
+
+    public function suspendreEquipe($id)
+    {
+        $equipe = $this->getDoctrine()->getRepository(Equipes::class)->find($id);
+        $equipe->setSuspension(0);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->persist($equipe);
+        $entityManager->flush();
+        return $this->redirectToRoute('equipes');
+    }
+
+    /**
+     * @Route("equipes/{id}/activer", name="actif_equipe")
+     */
+    public function activerEquipe($id)
+    {
+        $equipe = $this->getDoctrine()->getRepository(Equipes::class)->find($id);
+        $equipe->setSuspension(1);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->persist($equipe);
+        $entityManager->flush();
+        return $this->redirectToRoute('equipes');
     }
 
 }

@@ -6,6 +6,7 @@ use App\Repository\JoueursRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass=JoueursRepository::class)
  */
@@ -46,7 +47,7 @@ class Joueurs
 
     /**
      * @Assert\Positive
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=false)
 
      */
     private $numero;
